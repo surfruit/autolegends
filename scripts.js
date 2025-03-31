@@ -41,7 +41,7 @@ function toggleMenu() {
     nav.classList.toggle('active');
 }
 
-// Слайдер
+// Слайдер для головної секції
 let slides = document.querySelectorAll('.slide');
 let currentSlide = 0;
 
@@ -56,5 +56,43 @@ function nextSlide() {
     showSlide(currentSlide);
 }
 
-setInterval(nextSlide, 5000); // Зміна слайду кожні 5 секунд
+setInterval(nextSlide, 5000);
 showSlide(currentSlide);
+
+// Слайдер для "Featured Cars"
+let featuredSlides = document.querySelectorAll('.featured-slide');
+let currentFeaturedSlide = 0;
+
+function showFeaturedSlide(index) {
+    featuredSlides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+    });
+}
+
+function nextFeaturedSlide() {
+    currentFeaturedSlide = (currentFeaturedSlide + 1) % featuredSlides.length;
+    showFeaturedSlide(currentFeaturedSlide);
+}
+
+setInterval(nextFeaturedSlide, 5000);
+showFeaturedSlide(currentFeaturedSlide);
+
+// EmailJS для відправки форми
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = {
+        name: document.querySelector('input[name="name"]').value,
+        email: document.querySelector('input[name="email"]').value,
+        message: document.querySelector('textarea[name="message"]').value
+    };
+
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
+        .then(function(response) {
+            alert('Message sent successfully!');
+            document.getElementById('contact-form').reset();
+        }, function(error) {
+            alert('Failed to send message. Please try again.');
+            console.error('Error:', error);
+        });
+});
